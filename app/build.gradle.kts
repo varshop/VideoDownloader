@@ -12,8 +12,8 @@ android {
         applicationId = "com.example.videodl"
         minSdk = 29
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
         ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a") }
     }
 
@@ -32,8 +32,19 @@ android {
     kotlinOptions { jvmTarget = "17" }
     buildFeatures { compose = true }
 
-    // مطلوب لمحرك yt-dlp (مكتبات native يتم استخراجها عند التثبيت)
-    packaging { jniLibs { useLegacyPackaging = true } }
+    packaging {
+        // مطلوب لمحرك yt-dlp (مكتبات native يتم استخراجها عند التثبيت)
+        jniLibs { useLegacyPackaging = true }
+        resources {
+            excludes += setOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE*",
+                "META-INF/NOTICE*",
+                "META-INF/INDEX.LIST"
+            )
+        }
+    }
 
     lint {
         abortOnError = false
@@ -52,7 +63,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("io.coil-kt:coil-compose:2.7.0")
 
-    // محرك التحميل: yt-dlp + ffmpeg (يدعم يوتيوب، تيك توك، إنستغرام، فيسبوك، X، ريديت... وآلاف المواقع)
+    // محرك التحميل: yt-dlp + ffmpeg
     implementation("io.github.junkfood02.youtubedl-android:library:0.17.2")
     implementation("io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2")
 }
